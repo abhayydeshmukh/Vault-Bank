@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Vault Bank - Online Banking System
 
 **Vault Bank** is a production-quality, secure, and event-driven online banking system built using **Spring Boot 3.x**, **Spring Security**, **Apache Kafka**, and **MySQL**. The project is designed following Clean Architecture/Layered Architecture patterns and SOLID design principles.
@@ -227,5 +226,3 @@ Open your browser and navigate to:
     *   Endpoint: `POST /api/admin/accounts/{accountNumber}/freeze`
     *   Attempts to debit/transfer money from this account will now throw an `AccountFrozenException` (HTTP 400).
 =======
-# Vault-Bank
->>>>>>> 0e12e6f9730c4fcb9be9c5592274f8b39c7f473d
