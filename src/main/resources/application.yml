@@ -34,7 +34,7 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
 server:
-  port: 8081
+  port: ${PORT:8081}
 
 # Custom Application Settings for JWT (using Base64 encoded 256-bit safe secret key by default)
 app:
