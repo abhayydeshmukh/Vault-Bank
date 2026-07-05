@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vault Bank — Premium Digital Banking</title>
+    <!-- Plus Jakarta Sans Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for fallback & support -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Chart.js for premium graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Notification Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- MAIN APP CONTAINER -->
+    <div id="app" class="app-wrapper">
+
+        <!-- ================= AUTH VIEW ================= -->
+        <div id="auth-view" class="auth-wrapper">
+            <div class="auth-brand">
+                <div class="logo-shield">
+                    <i data-lucide="shield-check" class="logo-shield-icon"></i>
+                </div>
+                <span class="auth-title">VAULT<span class="thin">BANK</span></span>
+                <span class="auth-subtitle">Institutional Grade Financial Assets</span>
+            </div>
+            
+            <div class="auth-card">
+                <!-- Login form -->
+                <form id="login-form" class="auth-form active">
+                    <div class="form-header">
+                        <h2>Welcome Back</h2>
+                        <p>Access your corporate asset portal</p>
+                    </div>
+                    <div class="input-field">
+                        <label for="login-email">Corporate Email</label>
+                        <div class="input-wrapper">
+                            <i data-lucide="mail" class="field-icon"></i>
+                            <input type="email" id="login-email" placeholder="name@vaultbank.com" required autocomplete="email">
+                        </div>
+                    </div>
+                    <div class="input-field">
+                        <label for="login-password">Security Key</label>
+                        <div class="input-wrapper">
+                            <i data-lucide="key-round" class="field-icon"></i>
+                            <input type="password" id="login-password" placeholder="••••••••" required autocomplete="current-password">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <span>Authenticate</span>
+                        <i data-lucide="arrow-right"></i>
+                    </button>
+                    <p class="switch-form">New to Vault Bank? <span onclick="toggleAuthForm('register')">Request access credentials</span></p>
+                </form>
+
+                <!-- Register form -->
+                <form id="register-form" class="auth-form">
+                    <div class="form-header">
+                        <h2>Request Credentials</h2>
+                        <p>Initialize a secure profile inside Vault Bank</p>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-field">
+                            <label for="reg-firstname">First Name</label>
+                            <div class="input-wrapper">
+                                <i data-lucide="user" class="field-icon"></i>
+                                <input type="text" id="reg-firstname" placeholder="Alice" required>
+                            </div>
+                        </div>
+                        <div class="input-field">
+                            <label for="reg-lastname">Last Name</label>
+                            <div class="input-wrapper">
+                                <i data-lucide="user" class="field-icon"></i>
+                                <input type="text" id="reg-lastname" placeholder="Smith" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-field">
+                        <label for="reg-email">Email Address</label>
+                        <div class="input-wrapper">
+                            <i data-lucide="mail" class="field-icon"></i>
+                            <input type="email" id="reg-email" placeholder="alice@domain.com" required autocomplete="email">
+                        </div>
+                    </div>
+                    <div class="input-field">
+                        <label for="reg-password">Password (Min 6 Characters)</label>
+                        <div class="input-wrapper">
+                            <i data-lucide="lock" class="field-icon"></i>
+                            <input type="password" id="reg-password" placeholder="••••••••" minlength="6" required autocomplete="new-password">
+                        </div>
+                    </div>
+                    <div class="input-field">
+                        <label for="reg-role">Access Authorization</label>
+                        <div class="input-wrapper">
+                            <i data-lucide="shield" class="field-icon"></i>
+                            <select id="reg-role">
+                                <option value="ROLE_USER">Customer Profile</option>
+                                <option value="ROLE_ADMIN">Administrator</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <span>Provision Account</span>
+                        <i data-lucide="user-plus"></i>
+                    </button>
+                    <p class="switch-form">Already registered? <span onclick="toggleAuthForm('login')">Access login portal</span></p>
+                </form>
+            </div>
+        </div>
+
+        <!-- ================= MAIN DASHBOARD VIEWS ================= -->
+        <div id="dashboard-layout" class="dashboard-wrapper hidden">
+            
+            <!-- Collapsible Sidebar -->
+            <aside id="app-sidebar" class="app-sidebar">
+                <div class="sidebar-header">
+                    <div class="logo">
+                        <div class="logo-shield">
+                            <i data-lucide="shield-check"></i>
+                        </div>
+                        <span class="logo-text">VAULT<span class="thin">BANK</span></span>
+                    </div>
+                    <button id="sidebar-toggle" class="sidebar-toggle-btn">
+                        <i data-lucide="chevron-left" id="toggle-icon"></i>
+                    </button>
+                </div>
+
+                <nav class="sidebar-menu">
+                    <a href="#" class="menu-item active" data-target="dashboard-view">
+                        <i data-lucide="layout-dashboard"></i> <span>Dashboard</span>
+                    </a>
+                    <a href="#" class="menu-item" data-target="accounts-view">
+                        <i data-lucide="wallet"></i> <span>My Accounts</span>
+                    </a>
+                    <a href="#" class="menu-item" data-target="transfer-view">
+                        <i data-lucide="send"></i> <span>Transfer Money</span>
+                    </a>
+                    <a href="#" class="menu-item" data-target="history-view">
+                        <i data-lucide="receipt"></i> <span>Transactions</span>
+                    </a>
+                    <a href="#" class="menu-item" data-target="analytics-view">
+                        <i data-lucide="trending-up"></i> <span>Analytics</span>
+                    </a>
+                    <a href="#" class="menu-item" data-target="profile-view">
+                        <i data-lucide="user-cog"></i> <span>Settings</span>
+                    </a>
+                    <a href="#" id="nav-admin" class="menu-item admin-only hidden" data-target="admin-view">
+                        <i data-lucide="terminal"></i> <span>Admin Console</span>
+                    </a>
+                </nav>
+
+                <div class="sidebar-footer">
+                    <div class="profile-badge">
+                        <div class="avatar" id="avatar-letters">JD</div>
+                        <div class="profile-info">
+                            <span class="name" id="user-display-name">Jane Doe</span>
+                            <span class="role" id="user-display-role">CUSTOMER</span>
+                        </div>
+                    </div>
+                    <button id="btn-signout" class="btn btn-logout-sidebar btn-block">
+                        <i data-lucide="log-out"></i> <span>Sign Out</span>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <div class="content-container">
+                
+                <!-- TOP BAR -->
+                <header class="topbar">
+                    <div class="topbar-search">
+                        <i data-lucide="search" class="search-icon"></i>
+                        <input type="text" placeholder="Search transactions, accounts, actions..." id="global-search">
+                    </div>
+                    <div class="topbar-actions">
+                        <span class="current-date" id="topbar-date">July 5, 2026</span>
+                        <div class="divider"></div>
+                        <button id="theme-toggle" class="icon-btn" title="Toggle Theme">
+                            <i data-lucide="sun" id="theme-icon-sun" class="hidden"></i>
+                            <i data-lucide="moon" id="theme-icon-moon"></i>
+                        </button>
+                        <button class="icon-btn relative" title="Notifications">
+                            <i data-lucide="bell"></i>
+                            <span class="notification-indicator"></span>
+                        </button>
+                        <div class="divider"></div>
+                        <div class="avatar dropdown-trigger" id="topbar-avatar" onclick="toggleDropdown()">JD</div>
+                    </div>
+                </header>
+
+                <!-- VIEW CONTAINERS -->
+                <main class="viewport">
+                    
+                    <!-- 1. DASHBOARD VIEW -->
+                    <section id="dashboard-view" class="viewport-section">
+                        <!-- Hero Section -->
+                        <div class="hero-card">
+                            <div class="hero-text">
+                                <h1>Welcome back, <span id="hero-name">Jane</span></h1>
+                                <p>Asset liquidity remains stable. Complete transactions and monitor audits directly from your workspace.</p>
+                            </div>
+                            <div class="hero-illustration">
+                                <svg width="200" height="120" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20 100 C 60 70, 80 80, 120 40 C 140 20, 160 30, 180 10" stroke="url(#paint0_linear)" stroke-width="6" stroke-linecap="round"/>
+                                    <circle cx="120" cy="40" r="8" fill="#3B82F6" filter="url(#glow)"/>
+                                    <circle cx="180" cy="10" r="8" fill="#22C55E" filter="url(#glow)"/>
+                                    <defs>
+                                        <linearGradient id="paint0_linear" x1="20" y1="100" x2="180" y2="10" gradientUnits="userSpaceOnUse">
+                                            <stop stop-color="#3B82F6"/>
+                                            <stop offset="0.5" stop-color="#8B5CF6"/>
+                                            <stop offset="1" stop-color="#22C55E"/>
+                                        </linearGradient>
+                                        <filter id="glow">
+                                            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                            <feMerge>
+                                                <feMergeNode in="coloredBlur"/>
+                                                <feMergeNode in="SourceGraphic"/>
+                                            </feMerge>
+                                        </filter>
+                                    </defs>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Metric Stats Grid -->
+                        <div class="stats-grid">
+                            <div class="card stat-card">
+                                <div class="stat-header">
+                                    <span class="title">Total Balance</span>
+                                    <div class="stat-icon-wrapper cyan"><i data-lucide="coins"></i></div>
+                                </div>
+                                <h2 class="stat-value text-glow" id="stat-total-balance">$0.00</h2>
+                                <span class="trend positive"><i data-lucide="trending-up"></i> +4.2% this month</span>
+                            </div>
+                            <div class="card stat-card">
+                                <div class="stat-header">
+                                    <span class="title">Available Liquidity</span>
+                                    <div class="stat-icon-wrapper blue"><i data-lucide="piggy-bank"></i></div>
+                                </div>
+                                <h2 class="stat-value" id="stat-available-balance">$0.00</h2>
+                                <span class="trend positive"><i data-lucide="trending-up"></i> Stable reserve</span>
+                            </div>
+                            <div class="card stat-card">
+                                <div class="stat-header">
+                                    <span class="title">Active Accounts</span>
+                                    <div class="stat-icon-wrapper purple"><i data-lucide="credit-card"></i></div>
+                                </div>
+                                <h2 class="stat-value" id="stat-active-accounts">0</h2>
+                                <span class="trend text-muted"><i data-lucide="arrow-right"></i> Savings & Current</span>
+                            </div>
+                            <div class="card stat-card">
+                                <div class="stat-header">
+                                    <span class="title">Ledger Transactions</span>
+                                    <div class="stat-icon-wrapper green"><i data-lucide="activity"></i></div>
+                                </div>
+                                <h2 class="stat-value" id="stat-monthly-txs">0</h2>
+                                <span class="trend positive"><i data-lucide="shield-check"></i> Audit verified</span>
+                            </div>
+                        </div>
+
+                        <!-- Dashboard Split layout -->
+                        <div class="split-layout">
+                            
+                            <!-- Left: Quick Account List -->
+                            <div class="split-left">
+                                <div class="section-title-row">
+                                    <h2>Active Accounts</h2>
+                                    <button class="btn btn-secondary btn-sm" onclick="openOpenAccountModal()">
+                                        <i data-lucide="plus"></i> Open Account
+                                    </button>
+                                </div>
+                                <div id="dashboard-accounts-container" class="dashboard-accounts-grid">
+                                    <!-- Accounts Cards mapped via JS -->
+                                    <div class="card skeleton-card">
+                                        <div class="skeleton shimmer-line header"></div>
+                                        <div class="skeleton shimmer-line number"></div>
+                                        <div class="skeleton shimmer-line balance"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right: Quick Actions Docks -->
+                            <div class="split-right">
+                                <h2>Quick Actions</h2>
+                                <div class="quick-actions-grid">
+                                    <div class="action-card" onclick="switchView('transfer-view')">
+                                        <div class="icon-circle blue"><i data-lucide="send"></i></div>
+                                        <h3>Transfer</h3>
+                                        <p>Send funds instantly</p>
+                                    </div>
+                                    <div class="action-card" onclick="openOpenAccountModal()">
+                                        <div class="icon-circle cyan"><i data-lucide="plus-circle"></i></div>
+                                        <h3>New Account</h3>
+                                        <p>Open savings/current</p>
+                                    </div>
+                                    <div class="action-card" onclick="switchView('history-view')">
+                                        <div class="icon-circle purple"><i data-lucide="receipt"></i></div>
+                                        <h3>Ledger</h3>
+                                        <p>Inspect audit trail</p>
+                                    </div>
+                                    <div class="action-card" onclick="switchView('analytics-view')">
+                                        <div class="icon-circle green"><i data-lucide="trending-up"></i></div>
+                                        <h3>Analytics</h3>
+                                        <p>Asset performance</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 2. MY ACCOUNTS VIEW -->
+                    <section id="accounts-view" class="viewport-section hidden">
+                        <div class="section-title-row">
+                            <div class="title-meta">
+                                <h1>Managed Accounts</h1>
+                                <p>Review balances, toggle configurations, and deposit cash assets.</p>
+                            </div>
+                            <button class="btn btn-primary" onclick="openOpenAccountModal()">
+                                <i data-lucide="plus"></i> Open New Account
+                            </button>
+                        </div>
+
+                        <div id="full-accounts-container" class="grid-layout cols-2">
+                            <!-- Populated with Credit-card looking account assets -->
+                        </div>
+                    </section>
+
+                    <!-- 3. TRANSFER FUNDS VIEW -->
+                    <section id="transfer-view" class="viewport-section hidden">
+                        <div class="form-container card">
+                            <div class="form-header-title">
+                                <h2>Send Money</h2>
+                                <p>Transfer funds between corporate accounts instantly.</p>
+                            </div>
+                            <form id="transfer-form-premium">
+                                <div class="input-field">
+                                    <label for="transfer-source-acc">Source Debit Account</label>
+                                    <div class="input-wrapper">
+                                        <i data-lucide="wallet" class="field-icon"></i>
+                                        <select id="transfer-source-acc" required>
+                                            <option value="">Select source account...</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="input-field">
+                                    <label for="transfer-dest-acc">Destination Account Number</label>
+                                    <div class="input-wrapper">
+                                        <i data-lucide="credit-card" class="field-icon"></i>
+                                        <input type="text" id="transfer-dest-acc" placeholder="e.g. 100234567890" required>
+                                    </div>
+                                </div>
+                                <div class="input-field">
+                                    <label for="transfer-val">Amount ($)</label>
+                                    <div class="input-wrapper">
+                                        <i data-lucide="dollar-sign" class="field-icon"></i>
+                                        <input type="number" id="transfer-val" step="0.01" min="0.01" placeholder="0.00" required>
+                                    </div>
+                                </div>
+                                <div class="input-field">
+                                    <label for="transfer-memo">Reference/Memo</label>
+                                    <div class="input-wrapper">
+                                        <i data-lucide="pen-tool" class="field-icon"></i>
+                                        <input type="text" id="transfer-memo" placeholder="Invoice or payment details">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    <span>Execute Wire Transfer</span>
+                                    <i data-lucide="send"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </section>
+
+                    <!-- 4. TRANSACTIONS LEDGER VIEW -->
+                    <section id="history-view" class="viewport-section hidden">
+                        <div class="filter-bar card">
+                            <div class="filter-row">
+                                <div class="input-field search-field no-margin">
+                                    <div class="input-wrapper">
+                                        <i data-lucide="search" class="field-icon"></i>
+                                        <input type="text" id="ledger-search-input" placeholder="Search by reference, description...">
+                                    </div>
+                                </div>
+                                <div class="input-field select-field no-margin">
+                                    <div class="input-wrapper">
+                                        <i data-lucide="wallet" class="field-icon"></i>
+                                        <select id="ledger-account-select">
+                                            <option value="">Select account...</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tag-row">
+                                <button class="filter-tag active" data-filter="ALL">All Transactions</button>
+                                <button class="filter-tag" data-filter="DEPOSIT">Deposits</button>
+                                <button class="filter-tag" data-filter="WITHDRAWAL">Withdrawals</button>
+                                <button class="filter-tag" data-filter="TRANSFER">Transfers</button>
+                            </div>
+                        </div>
+
+                        <!-- Table Card -->
+                        <div class="card table-card">
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Ledger Ref</th>
+                                            <th>Type</th>
+                                            <th>Details</th>
+                                            <th>Parties Involved</th>
+                                            <th>Amount</th>
+                                            <th>Settled Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="transactions-table-body">
+                                        <tr>
+                                            <td colspan="6" class="table-empty">
+                                                <div class="empty-state">
+                                                    <i data-lucide="receipt" class="empty-state-icon"></i>
+                                                    <h3>No account selected</h3>
+                                                    <p>Select a bank account above to query transaction history details.</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- Pagination Controls -->
+                            <div id="table-pagination" class="table-pagination hidden">
+                                <span class="page-indicator" id="page-indicator-label">Showing page 1 of 1</span>
+                                <div class="pagination-buttons">
+                                    <button class="btn btn-secondary btn-sm" id="btn-page-prev"><i data-lucide="chevron-left"></i> Previous</button>
+                                    <button class="btn btn-secondary btn-sm" id="btn-page-next">Next <i data-lucide="chevron-right"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 5. ANALYTICS VIEW -->
+                    <section id="analytics-view" class="viewport-section hidden">
+                        <div class="grid-layout cols-1">
+                            <div class="card chart-card">
+                                <div class="chart-header">
+                                    <div class="chart-title-meta">
+                                        <h2>Asset Performance Chart</h2>
+                                        <p>Asset liquidity values recorded over the past 30 days.</p>
+                                    </div>
+                                    <div class="chart-controls">
+                                        <button class="btn btn-secondary btn-sm active">30D</button>
+                                        <button class="btn btn-secondary btn-sm">6M</button>
+                                        <button class="btn btn-secondary btn-sm">1Y</button>
+                                    </div>
+                                </div>
+                                <div class="chart-canvas-wrapper">
+                                    <canvas id="assetPerformanceChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 6. PROFILE & SETTINGS VIEW -->
+                    <section id="profile-view" class="viewport-section hidden">
+                        <div class="form-container card">
+                            <div class="form-header-title">
+                                <h2>Profile Settings</h2>
+                                <p>Review your personal profile data and configuration details.</p>
+                            </div>
+                            <form id="profile-settings-form">
+                                <div class="input-field">
+                                    <label>Registered Corporate Email</label>
+                                    <div class="input-wrapper">
+                                        <i data-lucide="mail" class="field-icon"></i>
+                                        <input type="text" id="settings-email" readonly style="opacity:0.65; cursor:not-allowed;">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="input-field">
+                                        <label for="settings-firstname">First Name</label>
+                                        <div class="input-wrapper">
+                                            <i data-lucide="user" class="field-icon"></i>
+                                            <input type="text" id="settings-firstname" placeholder="Jane" required>
+                                        </div>
+                                    </div>
+                                    <div class="input-field">
+                                        <label for="settings-lastname">Last Name</label>
+                                        <div class="input-wrapper">
+                                            <i data-lucide="user" class="field-icon"></i>
+                                            <input type="text" id="settings-lastname" placeholder="Doe" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="input-field">
+                                    <label>Role Authorization</label>
+                                    <div class="input-wrapper">
+                                        <i data-lucide="shield" class="field-icon"></i>
+                                        <input type="text" id="settings-role" readonly style="opacity:0.65; cursor:not-allowed;">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    <span>Update Details</span>
+                                    <i data-lucide="save"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </section>
+
+                    <!-- 7. ADMIN CONSOLE OVERRIDES -->
+                    <section id="admin-view" class="viewport-section hidden">
+                        <div class="card admin-card">
+                            <div class="form-header-title">
+                                <h2>Administrative Overrides</h2>
+                                <p>Audit system users, verify profiles, and toggle account freeze suspensions.</p>
+                            </div>
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Profile ID</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Authorization Role</th>
+                                            <th>Status</th>
+                                            <th>Accounts & Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-table-body">
+                                        <!-- Mapped dynamically via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= SYSTEM MODALS ================= -->
+
+    <!-- Open Account Modal -->
+    <div id="modal-open-account" class="modal-overlay hidden">
+        <div class="modal-content card">
+            <div class="modal-header">
+                <h2>Initialize Account</h2>
+                <button class="modal-close" onclick="closeModal('modal-open-account')"><i data-lucide="x"></i></button>
+            </div>
+            <form id="form-open-account">
+                <div class="input-field">
+                    <label for="modal-acc-type">Select Account Category</label>
+                    <div class="input-wrapper">
+                        <i data-lucide="landmark" class="field-icon"></i>
+                        <select id="modal-acc-type" required>
+                            <option value="SAVINGS">Savings Account — Interest yielding</option>
+                            <option value="CURRENT">Current Account — Liquid transactional</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modal-open-account')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Open Account</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Deposit Modal -->
+    <div id="modal-deposit" class="modal-overlay hidden">
+        <div class="modal-content card">
+            <div class="modal-header">
+                <h2>Credit Assets</h2>
+                <button class="modal-close" onclick="closeModal('modal-deposit')"><i data-lucide="x"></i></button>
+            </div>
+            <form id="form-deposit">
+                <input type="hidden" id="deposit-account-num-input">
+                <div class="input-field">
+                    <label>Destination Account Number</label>
+                    <div class="modal-static-label" id="deposit-account-num-label">100234567890</div>
+                </div>
+                <div class="input-field">
+                    <label for="deposit-val-input">Credit Amount ($)</label>
+                    <div class="input-wrapper">
+                        <i data-lucide="dollar-sign" class="field-icon"></i>
+                        <input type="number" id="deposit-val-input" step="0.01" min="0.01" placeholder="0.00" required>
+                    </div>
+                </div>
+                <div class="input-field">
+                    <label for="deposit-memo-input">Transaction Description</label>
+                    <div class="input-wrapper">
+                        <i data-lucide="pen-tool" class="field-icon"></i>
+                        <input type="text" id="deposit-memo-input" placeholder="e.g. Deposit check">
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modal-deposit')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Process Deposit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Withdraw Modal -->
+    <div id="modal-withdraw" class="modal-overlay hidden">
+        <div class="modal-content card">
+            <div class="modal-header">
+                <h2>Debit Assets</h2>
+                <button class="modal-close" onclick="closeModal('modal-withdraw')"><i data-lucide="x"></i></button>
+            </div>
+            <form id="form-withdraw">
+                <input type="hidden" id="withdraw-account-num-input">
+                <div class="input-field">
+                    <label>Source Account Number</label>
+                    <div class="modal-static-label" id="withdraw-account-num-label">100234567890</div>
+                </div>
+                <div class="input-field">
+                    <label for="withdraw-val-input">Debit Amount ($)</label>
+                    <div class="input-wrapper">
+                        <i data-lucide="dollar-sign" class="field-icon"></i>
+                        <input type="number" id="withdraw-val-input" step="0.01" min="0.01" placeholder="0.00" required>
+                    </div>
+                </div>
+                <div class="input-field">
+                    <label for="withdraw-memo-input">Transaction Description</label>
+                    <div class="input-wrapper">
+                        <i data-lucide="pen-tool" class="field-icon"></i>
+                        <input type="text" id="withdraw-memo-input" placeholder="e.g. ATM cash out">
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modal-withdraw')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Process Withdrawal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Custom Frontend Application Script -->
+    <script src="app.js"></script>
+</body>
+</html>
