@@ -1,6 +1,6 @@
 # Vault Bank - Online Banking System
 
-**Vault Bank** is a production-quality, secure, and event-driven online banking system built using **Spring Boot 3.x**, **Spring Security**, **Apache Kafka**, and **MySQL**. The project is designed following Clean Architecture/Layered Architecture patterns and SOLID design principles.
+**Vault Bank** is a production-quality, secure, and event-driven online banking system built using **Spring Boot 3.x**, **Spring Security**, **Apache Kafka**, and **MySQL**. The project is designed following Clean Architecture/Layered Architecture patterns and SOLID design principles...
 
 ---
 
